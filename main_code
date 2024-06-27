@@ -31,3 +31,45 @@ string editAndObfuscateCode(string givenCode);
 
 void readAndPrintResult(const string& filePath);
 
+// Главная функция
+int main() {
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
+    setlocale(LC_ALL, "Russian");
+
+    string filePath;
+    cout << "Введите название файла: "; cin >> filePath;
+
+    // Читаем содержимое исходного файла в строку
+    ifstream fileIn(filePath);
+    if (!fileIn) {
+        cerr << "Не удалось открыть файл." << endl;
+        return 1;
+    }
+    stringstream buffer;
+    buffer << fileIn.rdbuf();
+    string code = buffer.str();
+    fileIn.close();
+
+    // Редактируем и обфусцируем код
+    string obfuscatedCode = editAndObfuscateCode(code);
+
+    // Добавляем недостижимый код
+    string finalCode = addUnreachableCodeToEachFunction(obfuscatedCode);
+
+    // Записываем модифицированный код в новый файл
+    ofstream fileOut("output.txt");
+    if (!fileOut) {
+        cerr << "Не удалось открыть файл для записи." << endl;
+        return 1;
+    }
+    fileOut << finalCode;
+    fileOut.close();
+
+    cout << "Обработка файла завершена. Результат записан в output.txt" << endl;
+
+    // Читаем и выводим результат
+    readAndPrintResult("output.txt");
+
+    return 0;
+}
