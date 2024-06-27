@@ -178,3 +178,18 @@ void deleteComments(string& givenCode) {
         beginningComment = givenCode.find("//");
     }
 }
+// Обновленная функция для удаления пустых строк и строк, содержащих только пробелы
+
+void deleteEmptyLines(string& givenCode) {
+    // Регулярное выражение для поиска пустых строк и строк, содержащих только пробелы
+    regex emptyLineRegex("^\\s*$");
+
+    // Заменяем все найденные строки на пустую строку
+    givenCode = regex_replace(givenCode, emptyLineRegex, "", regex_constants::format_default);
+
+    // Удаляем возможные повторяющиеся переводы строк после удаления пустых строк
+    size_t pos = 0;
+    while ((pos = givenCode.find("\n\n", pos)) != string::npos) {
+        givenCode.erase(pos, 1);
+    }
+}
