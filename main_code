@@ -193,3 +193,38 @@ void deleteEmptyLines(string& givenCode) {
         givenCode.erase(pos, 1);
     }
 }
+
+// Функция для редактирования файла и замены переменных и функций
+
+string editAndObfuscateCode(string givenCode) {
+    deleteComments(givenCode);
+    deleteEmptyLines(givenCode);
+    size_t pos = givenCode.find('\n');
+    if (pos != string::npos) {
+        givenCode.erase(pos, 1);
+    }
+    // Регулярное выражение для поиска переменных и функций
+    regex variableFunctionRegex("([a-zA-Z_]\\w*)\\s*(?=\\(|\\s*=|\\s*;)");
+    sregex_iterator it(givenCode.begin(), givenCode.end(), variableFunctionRegex);
+    sregex_iterator itEnd;
+
+    unordered_map<string, string> nameMap; // Словарь для хранения соответствий оригинальных и новых имен
+
+    while (it != itEnd) {
+        smatch match = *it;
+        string originalName = match.str(1);
+        if (originalName != "int" && originalName != "if" && originalName != "using" && originalName != "main" && originalName != "std" && originalName != "goto" && originalName != "for" && nameMap.find(originalName) == nameMap.end()) {
+            string randomName = generateRandomName(nameMap);
+            nameMap[originalName] = randomName; // Сохраняем новое имя в словаре
+        }
+        ++it;
+    }
+
+    // Заменяем все вхождения оригинальных имен на новые
+    for (const auto& pair : nameMap) {
+        regex varFuncRegex("\\b" + pair.first + "\\b");
+        givenCode = regex_replace(givenCode, varFuncRegex, pair.second);
+    }
+
+    return givenCode;
+}
