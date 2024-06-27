@@ -133,3 +133,20 @@ string addUnreachableCodeToEachFunction(const string& code) {
 
     return modifiedCode;
 }
+// Функция для генерации случайного имени
+
+string generateRandomName(unordered_map<string, string>& nameMap) {
+    string letters = "abcdefghijklmnopqrstuvwxyz_ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    string randomName;
+    uniform_int_distribution<> dist(5, 10); // Распределение для длины имени
+
+    do {
+        randomName.clear();
+        int length = dist(rng); // Случайная длина имени
+        for (int i = 0; i < length; ++i) {
+            randomName += letters[rng() % letters.size()];
+        }
+    } while (nameMap.find(randomName) != nameMap.end()); // Проверяем, что имя уникально
+
+    return randomName;
+}
