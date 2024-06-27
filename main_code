@@ -73,3 +73,20 @@ int main() {
 
     return 0;
 }
+
+// Прототипы функций
+
+// Функция для печати и чтения результата
+void readAndPrintResult(const string& filePath) {
+    ifstream fileInResult(filePath);
+    if (!fileInResult) {
+        cerr << "Не удалось открыть файл " << filePath << " для чтения." << endl;
+        return;
+    }
+    string line;
+    cout << "\nРезультат:\n";
+    while (getline(fileInResult, line)) {
+        cout << line << endl;
+    }
+    fileInResult.close();
+}
