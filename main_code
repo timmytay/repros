@@ -150,3 +150,31 @@ string generateRandomName(unordered_map<string, string>& nameMap) {
 
     return randomName;
 }
+
+// Функции для удаления комментариев и пустых строк
+
+void deleteComments(string& givenCode) {
+    size_t beginningComment = givenCode.find("/*");
+    while (beginningComment != string::npos) {
+        size_t eoComment = givenCode.find("*/", beginningComment);
+        if (eoComment != string::npos) {
+            givenCode.erase(beginningComment, eoComment - beginningComment + 2);
+        }
+        else {
+            break; // Не найден конец комментария, выходим из цикла
+        }
+        beginningComment = givenCode.find("/*");
+    }
+    beginningComment = givenCode.find("//");
+    while (beginningComment != string::npos) {
+        size_t eoComment = givenCode.find("\n", beginningComment);
+        if (eoComment != string::npos) {
+            givenCode.erase(beginningComment, eoComment - beginningComment);
+        }
+        else {
+            givenCode.erase(beginningComment); // Удаляем комментарий "//" до конца строки
+            break;
+        }
+        beginningComment = givenCode.find("//");
+    }
+}
