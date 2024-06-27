@@ -1,1 +1,33 @@
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <regex>
+#include <random>
+#include <ctime>
+#include <unordered_map>
+#include <Windows.h>
+using namespace std;
+
+// Глобальный генератор случайных чисел
+mt19937 rng(random_device{}());
+
+// Функция для добавления недостижимого кода в случайное место каждой функции
+string addUnreachableCodeToEachFunction(const string& code);
+
+// Функция для генерации случайного имени
+string generateRandomName(unordered_map<string, string>& nameMap);
+
+// Функции для удаления комментариев и пустых строк
+void deleteComments(string& givenCode);
+
+// Обновленная функция для удаления пустых строк и строк, содержащих только пробелы
+void deleteEmptyLines(string& givenCode);
+
+// Функция для редактирования файла и замены переменных и функций
+string editAndObfuscateCode(string givenCode);
+
+// Функция для печати и чтения результата
+
+void readAndPrintResult(const string& filePath);
 
